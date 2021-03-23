@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import HighScore from './HighScore';
 
 class Application extends Component{
     //Viene eseguito solo quando viene instanziata la pagina, una sola volta
@@ -44,6 +45,15 @@ class Application extends Component{
             this.setState({overTen: true});
         }
     }
+
+    //Funzione per gestire la chiamata di "onReset" in highscore
+    resetCount = (e) => {
+        console.log("Event", e); //Per controllare da ispezione pagina il trigger del bottone
+        this.setState({
+            count: 0,
+            overTen: false
+        });
+    }
     
     //Restituisce su browser HTML, testo o simili
     render(){
@@ -53,14 +63,14 @@ class Application extends Component{
         return(
             <div>
                 <h1>{testo}, h1</h1>
-                {(this.state.overTen) ?
-                    <h3>Record di 10 battuto</h3>
-                    : null
-                }
-                <span>{testo}, span</span>
                 <h1>Hai premuto il bottone {count} volte</h1>
+                <HighScore 
+                    overTen = {this.state.overTen}
+                    onReset = {this.resetCount}
+                /> 
+                <span>{testo}, span</span>
                 <span>
-                    <button onClick = {() => this.handleCLick()}>Bottone</button>
+                    <button onClick = {(e) => this.handleCLick()}>Bottone</button>
                 </span>
             </div>
         );
