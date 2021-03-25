@@ -27,4 +27,4 @@ class HighScore extends Component{
     }
 }
 
-export default HighScore;
+export default HighScore; //Serve per essere usato negli altri file .js

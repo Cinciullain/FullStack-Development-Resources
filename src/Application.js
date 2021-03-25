@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import HighScore from './HighScore';
+import HighScore from './HighScore'; 
+import './css/style.css';
 
 class Application extends Component{
     //Viene eseguito solo quando viene instanziata la pagina, una sola volta
