@@ -10,13 +10,23 @@ class App extends Component{
 
 		this.state = {
 			corrente: '0',
-			precedenti: []
+			precedenti: [],
+			prossimoReset: false
 		}
 	}
 
-	//Resetta l'input inserito
+	//Resetta l'input inserito, gestice il simbolo C
 	reset = () => {
-		this.setState({risultato: '0'});
+		this.setState({corrente: '0', precedenti: [], prossimoReset: false});
+	}
+
+	//Funzione che svolge l'eq., gestisce il simbolo =
+	calcola = (simbolo) => {
+		let {corrente, precedenti, prossimoReset} = this.state;
+		if(precedenti.length > 0){
+			corrente = eval(String(precedenti[precedenti.length - 1] + corrente));
+			this.setState({corrente, precedenti: [], prossimoReset: true});
+		}
 	}
 
 	//Aggiunge il simbolo selezionato 
@@ -25,10 +35,15 @@ class App extends Component{
 		if(["/", "-", "+", "X"].indexOf(simbolo) > -1){
 			let {precedenti} = this.state;
 			precedenti.push(this.state.corrente + simbolo);
-			this.setState({precedenti});
+			this.setState({precedenti, prossimoReset: true});
 		}
-		else
-			this.setState({corrente: this.state.corrente + simbolo});
+		else{
+			if((this.state.corrente === "0" && simbolo !== ".") || this.state.prossimoReset)
+				this.setState({corrente: simbolo, prossimoReset: false});
+			
+			else
+				this.setState({corrente: this.state.corrente + simbolo});
+		}
 	}
 
 	render(){
@@ -50,7 +65,7 @@ class App extends Component{
 			{simbolo: '+', colonne: 1, azione: this.modificaCorrente},
 			{simbolo: '0', colonne: 2, azione: this.modificaCorrente},
 			{simbolo: '.', colonne: 1, azione: this.modificaCorrente},
-			{simbolo: '=', colonne: 1, azione: this.modificaCorrente},
+			{simbolo: '=', colonne: 1, azione: this.calcola},
 		]
 
 		return (
